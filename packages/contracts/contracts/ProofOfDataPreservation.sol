@@ -39,7 +39,7 @@ contract ProofOfDataPreservation is ERC721 {
 
     // get send to address
     // if beneficiary is registered, use beneficiary, if not, use owner
-    // NOTE: this is very experimental logic for hackathon, it should be updated according to the upcoming filecoin.sol
+    // this is very experimental logic for hackathon, it should be updated according to the upcoming filecoin.sol
     CustomMinerAPI minerAPI = CustomMinerAPI(miner);
     address to;
     try minerAPI.get_beneficiary() returns (MinerTypes.GetBeneficiaryReturn memory result) {
