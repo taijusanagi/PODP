@@ -9,7 +9,8 @@
     ]
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "yarn workspace @podp/contracts test-contracts"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

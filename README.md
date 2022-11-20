@@ -1,6 +1,6 @@
 # PODP - HackFEVM Submission
 
-PODP is Proof Of Data Preservation
+PODP is Proof Of Data Preservation for Filecoin Ecosystem
 
 ## Product Concept
 
@@ -21,11 +21,19 @@ https://github.com/taijusanagi/PODP/blob/main/packages/contracts/tasks/test-file
 
 This code is not documented yet so [I found out how to do that by myself](https://discord.com/channels/554623348622098432/822657841420435486/1043764320175149096).
 
-### 3D model generation for the SBT
+### Image generation for the SBT
 
 SBT is used to prove data preservation, and I want to make the SBT as cool as possible so that users think "I want to share this cool SBT with other community members!"
 
 This is inspired by [Minter Token by Fair.xyz](https://minter.fair.xyz/)
+
+No time to do this...!!!
+
+### Testing
+
+```
+yarn test
+```
 
 ## Lotus Node
 
