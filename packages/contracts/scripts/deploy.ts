@@ -3,7 +3,7 @@ import fs from "fs";
 import { ethers, network } from "hardhat";
 import path from "path";
 
-import { BASE_TOKEN_URI } from "../config";
+import { BASE_TOKEN_URI, CUSTOME_DEAL_ID, CUSTOME_PAYLOAD_CID } from "../config";
 import { callRpc } from "../lib/utils";
 import networkJsonFile from "../network.json";
 import {
@@ -32,9 +32,14 @@ async function main() {
   networkJsonFile[chainId].deployments.customMinerAPI = customMinerAPI.address;
   fs.writeFileSync(path.join(__dirname, `../network.json`), JSON.stringify(networkJsonFile));
 
-  const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy({
-    maxPriorityFeePerGas: await callRpc(fileCoinRPC, "eth_maxPriorityFeePerGas"),
-  });
+  const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy(
+    CUSTOME_DEAL_ID,
+    networkJsonFile[chainId].deployments.customMinerAPI,
+    CUSTOME_PAYLOAD_CID,
+    {
+      maxPriorityFeePerGas: await callRpc(fileCoinRPC, "eth_maxPriorityFeePerGas"),
+    }
+  );
   await customMarketAPI.deployed();
   console.log("customMarketAPI", customMarketAPI.address);
 

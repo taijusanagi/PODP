@@ -15,14 +15,12 @@ describe("integration", function () {
     const [signer, owner, beneficiary] = await ethers.getSigners();
     const customMinerAPI = await new CustomMinerAPI__factory(signer).deploy(owner.address);
     await customMinerAPI.deployed();
-    const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy();
-    await customMarketAPI.deployed();
-    const addMockCustomGenerateDealTx = await customMarketAPI.addMockCustomGenerateDeal(
+    const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy(
       CUSTOME_DEAL_ID,
       customMinerAPI.address,
       CUSTOME_PAYLOAD_CID
     );
-    await addMockCustomGenerateDealTx.wait();
+    await customMarketAPI.deployed();
     const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
       customMarketAPI.address,
       BASE_TOKEN_URI

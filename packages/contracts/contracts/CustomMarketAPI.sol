@@ -6,7 +6,9 @@ import "./filecoinMockAPIs/MarketAPI.sol";
 
 // this only modified the mock data insertion
 contract CustomMarketAPI is MarketAPI {
-  constructor() {}
+  constructor(uint64 customDealId, string memory customMiner, string memory customPayloadCID) {
+    addMockCustomGenerateDeal(customDealId, customMiner, customPayloadCID);
+  }
 
   // dealId, minter, payload is dynamic, and this function is public for the better testing
   function addMockCustomGenerateDeal(
