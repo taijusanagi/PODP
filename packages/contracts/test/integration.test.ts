@@ -11,6 +11,12 @@ import {
 import { ADDRESS_1 } from "./helper/dummy";
 
 describe("integration", function () {
+  console.log("debug log");
+
+  console.log("BASE_TOKEN_URI", BASE_TOKEN_URI);
+  console.log("CUSTOME_DEAL_ID", CUSTOME_DEAL_ID);
+  console.log("CUSTOME_PAYLOAD_CID", CUSTOME_PAYLOAD_CID);
+
   async function fixture() {
     const [signer, owner, beneficiary] = await ethers.getSigners();
     const customMinerAPI = await new CustomMinerAPI__factory(signer).deploy(owner.address);
@@ -116,6 +122,8 @@ describe("integration", function () {
     it("should work", async () => {
       const { proofOfDataPreservation } = await fixture();
       const tokenId = await proofOfDataPreservation.totalSupply();
+
+      console.log("claim deal id", CUSTOME_DEAL_ID);
       await proofOfDataPreservation.claim(CUSTOME_DEAL_ID);
       const tokenURI = await proofOfDataPreservation.tokenURI(tokenId);
       expect(await proofOfDataPreservation.tokenURI(tokenId)).to.eq(

@@ -47,7 +47,9 @@ SBT is used to prove data preservation, and I want to make the SBT as cool as po
 
 This is inspired by [Minter Token by Fair.xyz](https://minter.fair.xyz/)
 
-No time to do this...!!!
+This image is still under development
+
+![sbt](./docs/sbt.png)
 
 ### Deployed Contract
 
