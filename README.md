@@ -2,7 +2,25 @@
 
 PODP is Proof Of Data Preservation for Filecoin Ecosystem
 
-## Product Concept
+## Submission
+
+### Live App
+
+https://podp.vercel.app/
+
+## Problem
+
+One of the best practices of NFT data management is using IPFS. However, the content tends to be managed only by the creator. The content may be disappeared in the future.
+
+## Solution
+
+One of the solutions to this is to make the incentive to preserve the NFT-related data for the community members.
+
+And that is where PODP comes in.
+
+PODP provides very cool SBTs to data preservers, which can be used as proof of preserving essential data for the community.
+
+## How it works
 
 ![how-it-works](./docs/how-it-works.png)
 
