@@ -22,7 +22,7 @@ describe("integration", function () {
       customMinerAPI.address,
       CUSTOME_PAYLOAD_CID
     );
-
+    await addMockCustomGenerateDealTx.wait();
     const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
       customMarketAPI.address,
       BASE_TOKEN_URI
@@ -65,7 +65,7 @@ describe("integration", function () {
 
   describe("claim", function () {
     it("should work when claim to owner", async () => {
-      const { owner, customMarketAPI, proofOfDataPreservation } = await fixture();
+      const { owner, proofOfDataPreservation } = await fixture();
       const tokenId = await proofOfDataPreservation.totalSupply();
 
       await expect(proofOfDataPreservation.claim(CUSTOME_DEAL_ID))

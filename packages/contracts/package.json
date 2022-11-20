@@ -6,9 +6,8 @@
   "scripts": {
     "test-filecoin-basic": "hardhat test-filecoin-basic",
     "test-filecoin-js": "hardhat test-filecoin-js",
+    "test-contracts": "hardhat test",
     "build": "hardhat compile",
-    "test-local": "hardhat test",
-    "test-on-testnet": "yarn hardhat test --network filecoin-buildernet",
     "lint": "eslint '**/*.{js,ts}' --ignore-path .gitignore"
   },
   "devDependencies": {

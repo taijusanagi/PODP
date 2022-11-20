@@ -3,6 +3,7 @@ import util from "util";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const request = util.promisify(require("request"));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const callRpc = async (url: string, method: string, params?: any) => {
   const options = {
     method: "POST",

@@ -7,7 +7,7 @@ import networkJsonConfig from "../network.json";
 task("test-filecoin-basic", "Gets Filecoin f4 address and corresponding Ethereum address.").setAction(
   async (_, { ethers }) => {
     const [signer] = await ethers.getSigners();
-    const fileCoinRPC = networkJsonConfig["3141"].rpc;
+    const fileCoinRPC = networkJsonConfig["31415"].rpc;
 
     console.log("Get Filecoin Address ---");
     console.log("Ethereum address:", signer.address);

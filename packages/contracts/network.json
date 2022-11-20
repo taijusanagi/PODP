@@ -6,8 +6,11 @@
     "currency": "FIL",
     "icon": "filecoin.svg",
     "rpc": "https://wallaby.node.glif.io/rpc/v0",
-    "explorer": {
-      "tx": { "name": "A Simple Filecoin Analytics UI", "url": "https://explorer.glif.io" }
+    "explorer": { "tx": { "name": "A Simple Filecoin Analytics UI", "url": "https://explorer.glif.io" } },
+    "deployments": {
+      "customMinerAPI": "0x5E1417C303048C7FF12e678574e3b48b3B941Ad1",
+      "customMarketAPI": "0x5E1417C303048C7FF12e678574e3b48b3B941Ad1",
+      "proofOfDataPreservation": "0x5E1417C303048C7FF12e678574e3b48b3B941Ad1"
     }
   }
 }
