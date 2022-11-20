@@ -2,7 +2,7 @@
   "31415": {
     "key": "filecoin-buildernet",
     "env": "testnet",
-    "name": "Filecoin Buildernet",
+    "name": "Filecoin Wallaby",
     "currency": "FIL",
     "icon": "filecoin.svg",
     "rpc": "https://wallaby.node.glif.io/rpc/v0",
