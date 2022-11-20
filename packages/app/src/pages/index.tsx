@@ -53,7 +53,9 @@ const HomePage: NextPage = () => {
                   fontSize="sm"
                   onChange={(e) => setDealId(e.target.value)}
                 />
-                <Button w="full">Claim</Button>
+                <Button w="full" fontWeight={"bold"}>
+                  Claim
+                </Button>
               </Stack>
             </Unit>
             {/* <Unit header={"Minted SBTs"}>

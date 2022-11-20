@@ -10,7 +10,19 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "test": "yarn workspace @podp/contracts test-contracts"
+    "lint": "run-p lint:*",
+    "lint:app": "yarn workspace @podp/app lint",
+    "lint:contracts": "yarn workspace @podp/contracts lint",
+    "lint:backend": "yarn workspace @podp/backend lint",
+    "test": "run-p test:*",
+    "test:contracts": "yarn workspace @podp/contracts test",
+    "predev": "yarn prebuild",
+    "dev": "run-p dev:*",
+    "dev:app": "yarn workspace @podp/app dev",
+    "prebuild": "run-p prebuild:*",
+    "prebuild:contracts": "yarn workspace @podp/contracts build",
+    "build": "run-p build:*",
+    "build:app": "yarn workspace @podp/app build"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

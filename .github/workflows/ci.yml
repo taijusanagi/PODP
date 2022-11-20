@@ -12,5 +12,3 @@ jobs:
           node-version: 16.17.0
       - run: yarn
       - run: yarn build
-      - run: yarn test
-      - run: yarn lint
