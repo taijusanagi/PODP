@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+// import Canvas from "canvas";
 import * as dotenv from "dotenv";
 import { ethers } from "ethers";
 import express from "express";
@@ -12,15 +13,33 @@ import { ProofOfDataPreservation__factory } from "../../contracts/typechain-type
 
 dotenv.config();
 
-const fileDirectoryPath = path.join(__dirname, "./files");
+const fileDirectoryPath = path.join(__dirname, "../public");
 
 const app = express();
 app.use(express.json());
-// app.pu
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send(`ok`);
 });
+
+// export const generateImage = async (paylaodCID: string): Promise<Buffer> => {
+//   const backgroundImageFile = fs.readFileSync(fileDirectoryPath, `${paylaodCID}.png`);
+//   const backgroundImage = new Canvas.Image();
+//   backgroundImage.src = backgroundImageFile;
+//   const canvas = Canvas.createCanvas(1200, 630);
+//   const canvasContext = canvas.getContext("2d");
+//   canvasContext.drawImage(backgroundImage, 0, 0);
+//   canvasContext.font = "18px Arial";
+//   canvasContext.fillText(
+//     `
+//     PayloadCID: ${paylaodCID}:
+//     `,
+//     0,
+//     0
+//   );
+//   return canvas.toBuffer("image/jpeg", { quality: 0.4 });
+// };
 
 app.get("/metadata/:tokenId", async (req, res) => {
   const { tokenId } = req.params;
@@ -41,12 +60,19 @@ app.get("/metadata/:tokenId", async (req, res) => {
   // }
   // console.log("owner", owner);
   const outputPath = `${fileDirectoryPath}/${payloadCID}.png`;
+  // const imageBuffer = await generateImage(payloadCID as string);
+  const generatedPath = `${fileDirectoryPath}/${payloadCID}-generated.png`;
+  // fs.writeFileSync(generatedPath, imageBuffer);
 
   const metadata = {
-    image: `http://localhost:8080/${outputPath}"`,
+    name: `PODP #${tokenId}`,
+    description: "Proof Of Data Preservation for Filecoin Ecosystem",
+    preserver: "0x29893eEFF38C5D5A1B2F693e2d918e618CCFfdD8", // this should get from the contract
+    payloadCID,
+    originalImage: `http://localhost:8080/${payloadCID}.png"`,
+    image: `http://localhost:8080/${payloadCID}-sbt.png"`,
+    attributes: [{ key: "Size", value: 1024 }],
   };
-
-  const image = fs.readFileSync(outputPath);
 
   res.send(metadata);
 });
