@@ -54,7 +54,7 @@ const HomePage: NextPage = () => {
             </HStack>
           </VStack>
         )}
-        {isSignedIn(
+        {isSignedIn && (
           <Unit header={configJsonFile.name}>
             <Stack></Stack>
           </Unit>
