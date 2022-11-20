@@ -26,6 +26,7 @@ Payload CID: mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM
 Data retrieval is done by
 
 ```
+// you must run lotus in local envirionment and have some FIL in the wallet
 lotus client retrieve --provider t01113 mAXCg5AIgmtJq7yh1JTsGJkPrA1hLaSnXZIE+MfeeP1bT8OOGb4A data/mAXCg5AIgmtJq7yh1JTsGJkPrA1hLaSnXZIE+MfeeP1bT8OOGb4A.png
 ```
 
