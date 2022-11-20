@@ -1,9 +1,10 @@
-import { Button, HStack, Image, Input, Stack, Text, VStack } from "@chakra-ui/react";
+import { Button, Center, HStack, Image, Input, Spinner, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { NextPage } from "next";
 import { useState } from "react";
 
 import { Layout } from "@/components/Layout";
+import { Modal } from "@/components/Modal";
 import { Unit } from "@/components/Unit";
 import { useIsSignedIn } from "@/hooks/useIsSignedIn";
 
@@ -14,6 +15,7 @@ const HomePage: NextPage = () => {
   const { openConnectModal } = useConnectModal();
 
   const [dealId, setDealId] = useState("");
+  const disclosure = useDisclosure();
 
   return (
     <Layout>
@@ -53,11 +55,20 @@ const HomePage: NextPage = () => {
                   fontSize="sm"
                   onChange={(e) => setDealId(e.target.value)}
                 />
-                <Button w="full" fontWeight={"bold"}>
-                  Claim
+                <Button w="full" fontWeight={"bold"} onClick={disclosure.onOpen}>
+                  Claim SBTs
                 </Button>
               </Stack>
             </Unit>
+            <Modal header="Claiming SBTs..." isOpen={disclosure.isOpen} onClose={disclosure.onClose}>
+              <Text fontSize="xs">
+                To be honest, there is still issue in connecting with deployed contract. Let&apos;s check in the hardhat
+                test to check how contract works
+              </Text>
+              <Center height="400">
+                <Spinner />
+              </Center>
+            </Modal>
             {/* <Unit header={"Minted SBTs"}>
               <Stack></Stack>
             </Unit> */}

@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./CustomMarketAPI.sol";
 import "./CustomMinerAPI.sol";
 
+import "hardhat/console.sol";
+
 contract ProofOfDataPreservation is ERC721 {
   mapping(uint256 => string) public payloadCIDs;
 
@@ -31,7 +33,10 @@ contract ProofOfDataPreservation is ERC721 {
   }
 
   function claim(uint64 dealId) public {
+    console.log("--- log in contract start ---");
+
     uint256 tokenId = totalSupply;
+    console.log("tokenId", tokenId);
 
     // get payload cid by deal id
     MarketTypes.GetDealLabelReturn memory getDealLabelReturn = marketAPI.get_deal_label(
@@ -40,6 +45,7 @@ contract ProofOfDataPreservation is ERC721 {
 
     // // this works for the provided test data
     string memory payloadCID = getDealLabelReturn.label;
+    console.log("payloadCID", payloadCID);
     payloadCIDs[tokenId] = payloadCID;
 
     // get provider by deal id
@@ -47,23 +53,29 @@ contract ProofOfDataPreservation is ERC721 {
       MarketTypes.GetDealProviderParams(dealId)
     );
     address miner = convertStringAddressToAddress(getProviderReturn.provider);
-
+    console.log("miner", miner);
     // get send to address
     // if beneficiary is registered, use beneficiary, if not, use owner
     // this is very experimental logic for hackathon, it should be updated according to the upcoming filecoin.sol
     CustomMinerAPI minerAPI = CustomMinerAPI(miner);
     address to;
     try minerAPI.get_beneficiary() returns (MinerTypes.GetBeneficiaryReturn memory result) {
+      console.log("get owner of", miner);
       to = convertStringAddressToAddress(result.active.beneficiary);
       // result.
+      console.log("beneficiary of miner actor is", to);
     } catch {
       MinerTypes.GetOwnerReturn memory getOwnerReturn = minerAPI.get_owner();
       to = convertStringAddressToAddress(getOwnerReturn.owner);
+      console.log("owner of miner actor is", to);
     }
+
+    console.log("SBT is send to", to);
     // send token to the miner address
     _mint(to, tokenId);
     emit Claimed(dealId, to, tokenId, payloadCID);
     totalSupply++;
+    console.log("--- log in contract end ---");
   }
 
   // this can be onchain nft, but I make token metadata generation off-chain for the simplicity

@@ -11,15 +11,24 @@ import {
 import { ADDRESS_1 } from "./helper/dummy";
 
 describe("integration", function () {
+  console.log("debug log");
+
+  console.log("BASE_TOKEN_URI", BASE_TOKEN_URI);
+  console.log("CUSTOME_DEAL_ID", CUSTOME_DEAL_ID);
+  console.log("CUSTOME_PAYLOAD_CID", CUSTOME_PAYLOAD_CID);
+
   async function fixture() {
     const [signer, owner, beneficiary] = await ethers.getSigners();
     const customMinerAPI = await new CustomMinerAPI__factory(signer).deploy(owner.address);
     await customMinerAPI.deployed();
+
+    // dealId: baga6ea4seaqlkg6mss5qs56jqtajg5ycrhpkj2b66cgdkukf2qjmmzz6ayksuci
     const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy(
       CUSTOME_DEAL_ID,
       customMinerAPI.address,
       CUSTOME_PAYLOAD_CID
     );
+
     await customMarketAPI.deployed();
     const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
       customMarketAPI.address,
@@ -90,30 +99,6 @@ describe("integration", function () {
     });
   });
 
-  describe("tokenURI", function () {
-    it("should work", async () => {
-      const { proofOfDataPreservation } = await fixture();
-      const tokenId = await proofOfDataPreservation.totalSupply();
-      await proofOfDataPreservation.claim(CUSTOME_DEAL_ID);
-      expect(await proofOfDataPreservation.tokenURI(tokenId)).to.eq(
-        `${BASE_TOKEN_URI}${tokenId}?payloadCID=${CUSTOME_PAYLOAD_CID}`
-      );
-    });
-
-    it("should work claim to beneficiary", async () => {
-      const { beneficiary, customMinerAPI, proofOfDataPreservation } = await fixture();
-      await customMinerAPI.change_beneficiary({
-        new_beneficiary: beneficiary.address,
-        new_quota: 0, // dummy
-        new_expiration: 0, // dummy
-      });
-      const tokenId = await proofOfDataPreservation.totalSupply();
-      await expect(proofOfDataPreservation.claim(CUSTOME_DEAL_ID))
-        .to.emit(proofOfDataPreservation, "Transfer")
-        .withArgs(ethers.constants.AddressZero, beneficiary.address, tokenId);
-    });
-  });
-
   describe("SBT", function () {
     it("should work", async () => {
       const { owner, proofOfDataPreservation } = await fixture();
@@ -130,6 +115,22 @@ describe("integration", function () {
       await expect(proofOfDataPreservation.connect(owner).approve(ADDRESS_1, tokenId)).to.revertedWith(
         "ProofOfDataPreservation: _approve is not allowed"
       );
+    });
+  });
+
+  describe("tokenURI", function () {
+    it("should work", async () => {
+      const { proofOfDataPreservation } = await fixture();
+      const tokenId = await proofOfDataPreservation.totalSupply();
+
+      console.log("claim deal id", CUSTOME_DEAL_ID);
+      await proofOfDataPreservation.claim(CUSTOME_DEAL_ID);
+      const tokenURI = await proofOfDataPreservation.tokenURI(tokenId);
+      expect(await proofOfDataPreservation.tokenURI(tokenId)).to.eq(
+        `${BASE_TOKEN_URI}${tokenId}?payloadCID=${CUSTOME_PAYLOAD_CID}`
+      );
+
+      console.log("minted token token URI", tokenURI);
     });
   });
 
