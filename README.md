@@ -12,6 +12,8 @@ https://podp.vercel.app/
 
 One of the best practices of NFT data management is using IPFS. However, the content tends to be managed only by the creator. The content may be disappeared in the future.
 
+![404](./docs/404.png)
+
 ## Solution
 
 One of the solutions to this is to make the incentive to preserve the NFT-related data for the community members.
