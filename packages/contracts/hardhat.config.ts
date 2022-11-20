@@ -1,5 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox";
-import "./tasks/test-filecoin-basics";
+import "./tasks/test-filecoin-basic";
 
 import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
@@ -43,6 +43,9 @@ const config: HardhatUserConfig = {
           }
         : {
             chainId: HARDHAT_CHAINID,
+            accounts: {
+              mnemonic,
+            },
           },
     ...networksUserConfigs,
   },
