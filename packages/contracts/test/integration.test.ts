@@ -23,7 +23,9 @@ describe("integration", function () {
     await customMarketAPI.deployed();
     const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
       customMarketAPI.address,
-      BASE_TOKEN_URI
+      BASE_TOKEN_URI,
+      false, // claim is done at each testing
+      "0"
     );
     await proofOfDataPreservation.deployed();
 
@@ -128,6 +130,19 @@ describe("integration", function () {
       await expect(proofOfDataPreservation.connect(owner).approve(ADDRESS_1, tokenId)).to.revertedWith(
         "ProofOfDataPreservation: _approve is not allowed"
       );
+    });
+  });
+
+  describe("Addon Contractor Claim", function () {
+    it("should work", async () => {
+      const { signer, customMarketAPI } = await fixture();
+      const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
+        customMarketAPI.address,
+        BASE_TOKEN_URI,
+        false, // claim is done at each testing
+        "0"
+      );
+      console.log("ok", proofOfDataPreservation.address);
     });
   });
 });

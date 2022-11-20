@@ -1,8 +1,14 @@
+/* eslint-disable camelcase */
 import * as dotenv from "dotenv";
+import { ethers } from "ethers";
 import express from "express";
 import { HttpJsonRpcConnector, LotusClient } from "filecoin.js";
 import fs from "fs";
 import path from "path";
+
+import { BASE_TOKEN_URI } from "../../contracts/config";
+import networkJsonFile from "../../contracts/network.json";
+import { ProofOfDataPreservation__factory } from "../../contracts/typechain-types";
 
 dotenv.config();
 
@@ -10,8 +16,38 @@ const fileDirectoryPath = path.join(__dirname, "./files");
 
 const app = express();
 app.use(express.json());
+// app.pu
 
 app.get("/", (req, res) => {
+  res.send(`ok`);
+});
+
+app.get("/metadata/:tokenId", async (req, res) => {
+  const { tokenId } = req.params;
+  const { payloadCID } = req.query;
+  if (tokenId === undefined) {
+    throw new Error("token id is missing in request");
+  }
+  const provider = new ethers.providers.JsonRpcProvider(networkJsonFile["31415"].rpc);
+  const contract = ProofOfDataPreservation__factory.connect(
+    networkJsonFile["31415"].deployments.proofOfDataPreservation,
+    provider
+  );
+  console.log("tokenId", tokenId);
+  console.log("payloadCID", payloadCID);
+  // const owner = await contract.ownerOf(tokenId).catch(() => undefined);
+  // if (!owner) {
+  //   res.send(`token is not minted yet`);
+  // }
+  console.log("owner", owner);
+  const outputPath = `${fileDirectoryPath}/${payloadCID}.png`;
+
+  const metadata = {
+    image: `http://localhost:8080//"`,
+  };
+
+  const image = fs.readFileSync(outputPath);
+
   res.send(`ok`);
 });
 
@@ -20,11 +56,7 @@ app.post("/retrieve", async (req, res) => {
     throw new Error("lotus token not set");
   }
 
-  const { tokenId, payloadCID } = req.body;
-
-  if (tokenId === undefined) {
-    throw new Error("token id is missing in request");
-  }
+  const { payloadCID } = req.body;
 
   if (payloadCID === undefined) {
     throw new Error("payload cid is missing in request");
@@ -35,10 +67,6 @@ app.post("/retrieve", async (req, res) => {
   if (fs.existsSync(outputPath)) {
     return res.send("already processed");
   }
-
-  // check if the token is minted
-
-  // check the dire
 
   const localNodeUrl = "http://127.0.0.1:1234/rpc/v0";
   const adminAuthToken = process.env.LOTUS_TOKEN;

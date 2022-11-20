@@ -47,8 +47,10 @@ async function main() {
   fs.writeFileSync(path.join(__dirname, `../network.json`), JSON.stringify(networkJsonFile));
 
   const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
-    customMarketAPI.address,
+    networkJsonFile[chainId].deployments.customMarketAPI,
     BASE_TOKEN_URI,
+    true,
+    CUSTOME_DEAL_ID,
     {
       maxPriorityFeePerGas: await callRpc(fileCoinRPC, "eth_maxPriorityFeePerGas"),
     }
