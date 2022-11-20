@@ -39,16 +39,16 @@ app.get("/metadata/:tokenId", async (req, res) => {
   // if (!owner) {
   //   res.send(`token is not minted yet`);
   // }
-  console.log("owner", owner);
+  // console.log("owner", owner);
   const outputPath = `${fileDirectoryPath}/${payloadCID}.png`;
 
   const metadata = {
-    image: `http://localhost:8080//"`,
+    image: `http://localhost:8080/${outputPath}"`,
   };
 
   const image = fs.readFileSync(outputPath);
 
-  res.send(`ok`);
+  res.send(metadata);
 });
 
 app.post("/retrieve", async (req, res) => {

@@ -29,7 +29,17 @@ This is inspired by [Minter Token by Fair.xyz](https://minter.fair.xyz/)
 
 No time to do this...!!!
 
+### Deployed Contract
+
+```
+customMinerAPI 0x5E1417C303048C7FF12e678574e3b48b3B941Ad1
+customMarketAPI 0x5E1417C303048C7FF12e678574e3b48b3B941Ad1
+proofOfDataPreservation 0x5E1417C303048C7FF12e678574e3b48b3B941Ad1
+```
+
 ### Testing
+
+to test the smart contract functionality, please run
 
 ```
 yarn test

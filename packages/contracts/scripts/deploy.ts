@@ -49,8 +49,8 @@ async function main() {
   const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
     networkJsonFile[chainId].deployments.customMarketAPI,
     BASE_TOKEN_URI,
-    true,
-    CUSTOME_DEAL_ID,
+    false,
+    "0",
     {
       maxPriorityFeePerGas: await callRpc(fileCoinRPC, "eth_maxPriorityFeePerGas"),
     }

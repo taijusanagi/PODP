@@ -24,10 +24,10 @@ contract ProofOfDataPreservation is ERC721 {
   ) ERC721("ProofOfDataPreservation", "PODP") {
     marketAPI = MarketAPI(marketAPI_);
     baseTokenURI = baseTokenURI_;
-    if (withInitialClaim) {
-      // this is for rapid testing
-      claim(dealId);
-    }
+    // if (withInitialClaim) {
+    // this is for rapid testing
+    //   claim(dealId);
+    // }
   }
 
   function claim(uint64 dealId) public {
