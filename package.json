@@ -15,7 +15,7 @@
     "lint:contracts": "yarn workspace @podp/contracts lint",
     "lint:backend": "yarn workspace @podp/backend lint",
     "test": "run-p test:*",
-    "test:contracts": "yarn workspace @podp/contracts test",
+    "test:contracts": "yarn workspace @podp/contracts test-contracts",
     "predev": "yarn prebuild",
     "dev": "run-p dev:*",
     "dev:app": "yarn workspace @podp/app dev",

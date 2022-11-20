@@ -34,36 +34,35 @@ contract ProofOfDataPreservation is ERC721 {
     uint256 tokenId = totalSupply;
 
     // get payload cid by deal id
-    // MarketTypes.GetDealLabelReturn memory getDealLabelReturn = marketAPI.get_deal_label(
-    //   MarketTypes.GetDealLabelParams(dealId)
-    // );
+    MarketTypes.GetDealLabelReturn memory getDealLabelReturn = marketAPI.get_deal_label(
+      MarketTypes.GetDealLabelParams(dealId)
+    );
 
     // // this works for the provided test data
-    // string memory payloadCID = getDealLabelReturn.label;
-    // payloadCIDs[tokenId] = payloadCID;
+    string memory payloadCID = getDealLabelReturn.label;
+    payloadCIDs[tokenId] = payloadCID;
 
     // get provider by deal id
-    // MarketTypes.GetDealProviderReturn memory getProviderReturn = marketAPI.get_deal_provider(
-    //   MarketTypes.GetDealProviderParams(dealId)
-    // );
-    // address miner = convertStringAddressToAddress(getProviderReturn.provider);
+    MarketTypes.GetDealProviderReturn memory getProviderReturn = marketAPI.get_deal_provider(
+      MarketTypes.GetDealProviderParams(dealId)
+    );
+    address miner = convertStringAddressToAddress(getProviderReturn.provider);
 
     // get send to address
     // if beneficiary is registered, use beneficiary, if not, use owner
     // this is very experimental logic for hackathon, it should be updated according to the upcoming filecoin.sol
-    // CustomMinerAPI minerAPI = CustomMinerAPI(miner);
-    // address to;
-    // try minerAPI.get_beneficiary() returns (MinerTypes.GetBeneficiaryReturn memory result) {
-    //   to = convertStringAddressToAddress(result.active.beneficiary);
-    //   // result.
-    // } catch {
-    //   MinerTypes.GetOwnerReturn memory getOwnerReturn = minerAPI.get_owner();
-    //   to = convertStringAddressToAddress(getOwnerReturn.owner);
-    // }
-    address to = msg.sender;
+    CustomMinerAPI minerAPI = CustomMinerAPI(miner);
+    address to;
+    try minerAPI.get_beneficiary() returns (MinerTypes.GetBeneficiaryReturn memory result) {
+      to = convertStringAddressToAddress(result.active.beneficiary);
+      // result.
+    } catch {
+      MinerTypes.GetOwnerReturn memory getOwnerReturn = minerAPI.get_owner();
+      to = convertStringAddressToAddress(getOwnerReturn.owner);
+    }
     // send token to the miner address
     _mint(to, tokenId);
-    emit Claimed(dealId, to, tokenId, "");
+    emit Claimed(dealId, to, tokenId, payloadCID);
     totalSupply++;
   }
 
