@@ -1,33 +1,19 @@
-/* eslint-disable camelcase */
-import {
-  Button,
-  Flex,
-  HStack,
-  Icon,
-  Image,
-  Input,
-  Link,
-  SimpleGrid,
-  Stack,
-  Text,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, HStack, Image, Input, Stack, Text, VStack } from "@chakra-ui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Layout } from "@/components/Layout";
-import { Modal } from "@/components/Modal";
 import { Unit } from "@/components/Unit";
-import { useConnectedChainId } from "@/hooks/useConnectedChainId";
 import { useIsSignedIn } from "@/hooks/useIsSignedIn";
 
 import configJsonFile from "../../config.json";
 
 const HomePage: NextPage = () => {
   const { isSignedIn } = useIsSignedIn();
-  const openConnectModal = useConnectModal();
+  const { openConnectModal } = useConnectModal();
+
+  const [dealId, setDealId] = useState("");
 
   return (
     <Layout>
@@ -54,10 +40,26 @@ const HomePage: NextPage = () => {
             </HStack>
           </VStack>
         )}
+
         {isSignedIn && (
-          <Unit header={configJsonFile.name}>
-            <Stack></Stack>
-          </Unit>
+          <Stack spacing="8">
+            <Unit header={"Claim Proof of data preservation SBTs"}>
+              <Stack spacing="2">
+                <Input
+                  placeholder={"input filecoin deal id which preserves the data"}
+                  type={"text"}
+                  value={dealId}
+                  size="lg"
+                  fontSize="sm"
+                  onChange={(e) => setDealId(e.target.value)}
+                />
+                <Button w="full">Claim</Button>
+              </Stack>
+            </Unit>
+            {/* <Unit header={"Minted SBTs"}>
+              <Stack></Stack>
+            </Unit> */}
+          </Stack>
         )}
       </Stack>
     </Layout>
