@@ -32,7 +32,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat:
-      process.env.IS_INTEGRATION_TEST === "true"
+      process.env.IS_ON_FORKED_CHAIN === "true"
         ? {
             chainId: Number(process.env.FORK_CHAIN_ID),
             accounts: {

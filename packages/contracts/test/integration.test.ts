@@ -14,29 +14,35 @@ describe("integration", function () {
   async function fixture() {
     const [signer, owner, beneficiary] = await ethers.getSigners();
     const customMinerAPI = await new CustomMinerAPI__factory(signer).deploy(owner.address);
-    const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy(
+    await customMinerAPI.deployed();
+    const customMarketAPI = await new CustomMarketAPI__factory(signer).deploy();
+    await customMarketAPI.deployed();
+    const addMockCustomGenerateDealTx = await customMarketAPI.addMockCustomGenerateDeal(
       CUSTOME_DEAL_ID,
       customMinerAPI.address,
       CUSTOME_PAYLOAD_CID
     );
+
     const proofOfDataPreservation = await new ProofOfDataPreservation__factory(signer).deploy(
       customMarketAPI.address,
       BASE_TOKEN_URI
     );
+    await proofOfDataPreservation.deployed();
+
     return { signer, owner, beneficiary, customMinerAPI, customMarketAPI, proofOfDataPreservation };
   }
 
   describe("deployments", function () {
     it("should work", async () => {
-      const { owner, customMinerAPI, customMarketAPI } = await fixture();
+      const { owner, customMinerAPI } = await fixture();
       const getOwnerResult = await customMinerAPI.get_owner();
       expect(getOwnerResult.owner).to.equal(owner.address);
-      const getDealProviderResult = await customMarketAPI.get_deal_provider({ id: CUSTOME_DEAL_ID });
-      expect(getDealProviderResult.provider).to.equal(customMinerAPI.address);
     });
   });
 
-  describe("convertStringAddressToAddress", function () {
+  // keep this for the reference
+  // this is replaced by below "address and filecoin id conversion" in actual contract
+  describe("convertStringAddressToAddress -- old", function () {
     it("should work", async () => {
       const { signer, proofOfDataPreservation } = await fixture();
       const result = await proofOfDataPreservation.convertStringAddressToAddress(
@@ -46,10 +52,22 @@ describe("integration", function () {
     });
   });
 
+  // https://discord.com/channels/554623348622098432/1043770423663415306/1043830489837994015
+  describe("address and filecoin id conversion", function () {
+    it("should work", async () => {
+      const { proofOfDataPreservation } = await fixture();
+      const filecoinID = "t01113";
+      // use ethers utils to get checksum address
+      const filecoinIDInAddress = ethers.utils.getAddress("0xff00000000000000000000000000000000000459");
+      expect(await proofOfDataPreservation.covertFilecoinIDToAddress(filecoinID)).to.eq(filecoinIDInAddress);
+    });
+  });
+
   describe("claim", function () {
     it("should work when claim to owner", async () => {
-      const { owner, proofOfDataPreservation } = await fixture();
+      const { owner, customMarketAPI, proofOfDataPreservation } = await fixture();
       const tokenId = await proofOfDataPreservation.totalSupply();
+
       await expect(proofOfDataPreservation.claim(CUSTOME_DEAL_ID))
         .to.emit(proofOfDataPreservation, "Transfer")
         .withArgs(ethers.constants.AddressZero, owner.address, tokenId)

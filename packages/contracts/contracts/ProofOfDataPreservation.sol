@@ -2,8 +2,12 @@
 pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 import "./CustomMarketAPI.sol";
 import "./CustomMinerAPI.sol";
+
+import "hardhat/console.sol";
 
 contract ProofOfDataPreservation is ERC721 {
   mapping(uint256 => string) public payloadCIDs;
@@ -79,6 +83,46 @@ contract ProofOfDataPreservation is ERC721 {
   // this is to restrict the listing in NFT market
   function _approve(address to, uint256 tokenId) internal override {
     revert("ProofOfDataPreservation: _approve is not allowed");
+  }
+
+  /*
+   * ADDRESS CONVERSION
+   */
+
+  function swapUint32(uint32 input) internal pure returns (uint32) {
+    uint32 output = input;
+    output = ((output & 0xFF00FF00) >> 8) | ((output & 0x00FF00FF) << 8);
+    return (output >> 16) | (output << 16);
+  }
+
+  // logic for t01113 to 0xff00000000000000000000000000000000000459
+  // suggested https://discord.com/channels/554623348622098432/1043770423663415306/1043830489837994015)
+  function covertFilecoinIDToAddress(string memory input) public pure returns (address) {
+    string memory value = substring(input, 2, bytes(input).length);
+    address result = address(bytes20(abi.encodePacked(hex"ff", uint152(stringToUint(value)))));
+    return result;
+  }
+
+  // Logic for 0xff00000000000000000000000000000000000459 to t01113
+  // in my case, I need to use deployed miner API because 0xff00000000000000000000000000000000000459 is not deployed
+  // and I can not make left-0 padded address in testnet without admin role
+  // so just converting the address to uint, then convert to string
+  // https://discord.com/channels/554623348622098432/1043770423663415306/1043865952099520542
+  function convertAddressToFilecoinID(address input) internal pure returns (string memory) {
+    return string.concat("t0", Strings.toString(uint160(input)));
+  }
+
+  // https://ethereum.stackexchange.com/a/132434/68296
+  function stringToUint(string memory s) public pure returns (uint) {
+    bytes memory b = bytes(s);
+    uint result = 0;
+    for (uint256 i = 0; i < b.length; i++) {
+      uint256 c = uint256(uint8(b[i]));
+      if (c >= 48 && c <= 57) {
+        result = result * 10 + (c - 48);
+      }
+    }
+    return result;
   }
 
   // this method is not efficient, but it works properly to get the send to address from string data

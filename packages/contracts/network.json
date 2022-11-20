@@ -1,5 +1,5 @@
 {
-  "3141": {
+  "31415": {
     "key": "filecoin-buildernet",
     "env": "testnet",
     "name": "Filecoin Buildernet",
@@ -9,18 +9,5 @@
     "explorer": {
       "tx": { "name": "A Simple Filecoin Analytics UI", "url": "https://explorer.glif.io" }
     }
-  },
-  "80001": {
-    "key": "polygon-mumbai",
-    "env": "testnet",
-    "name": "Polygon Mumbai",
-    "currency": "MATIC",
-    "icon": "polygon.svg",
-    "rpc": "https://rpc.ankr.com/polygon_mumbai",
-    "explorer": {
-      "tx": { "name": "Polygonscan", "url": "https://mumbai.polygonscan.com" },
-      "nft": { "name": "Opensea", "url": "https://testnets.opensea.io/assets/mumbai" }
-    },
-    "api": "moralis"
   }
 }
