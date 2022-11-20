@@ -36,6 +36,14 @@ and the retrieved image is
 
 For this hackathon, the above image is used for testing
 
+## Decode Content CID
+
+I uploaded the above image to NFT.storage and the content is
+
+ipfs://bafybeiblm23hq22c3k6fqlvvpbiototds4kblkf5yas5iti6e2igtnbdva
+
+I want to check if the
+
 ## Other Testing
 
 ## Get Filecoin Address

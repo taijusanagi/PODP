@@ -1,5 +1,6 @@
 import "@nomicfoundation/hardhat-toolbox";
 import "./tasks/test-filecoin-basic";
+import "./tasks/test-filecoin-js";
 
 import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
